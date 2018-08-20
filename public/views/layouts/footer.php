@@ -7,6 +7,8 @@
 <script type="text/javascript" src="/public/js/bootstrap.js"></script>
 <!-- MDB core JavaScript -->
 <script type="text/javascript" src="/public/js/mdb.js"></script>
+
+<script type="text/javascript" src="/public/js/main.js"></script>
 </body>
 
 </html>
