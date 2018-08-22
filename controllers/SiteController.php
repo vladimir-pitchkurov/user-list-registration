@@ -9,10 +9,16 @@
 class SiteController
 {
 
-    function actionIndex()
+    public function actionIndex()
     {
-        //echo "Hello world!";
         include_once ROOT.'/public/views/login-page.php';
+        return true;
+    }
+
+    public function actionList()
+    {
+        var_dump($_SESSION);
+        echo 'Hello from List!';
         return true;
     }
 

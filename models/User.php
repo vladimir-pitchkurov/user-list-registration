@@ -5,17 +5,21 @@
 class User
 {
 
-    public static function register($name, $email, $password)
+    public static function register($user)
     {
         $db = Db::getConnection();
 
-        $sql = 'INSERT INTO user (name, email, password) '
-                . 'VALUES (:name, :email, :password)';
+        $sql = 'INSERT INTO user (first_name, last_name, email, password, description) '
+                . 'VALUES (:first_name, :last_name, :email, :password, :description)';
+        $hash_password = md5($user['password']);
 
         $result = $db->prepare($sql);
-        $result->bindParam(':name', $name, PDO::PARAM_STR);
-        $result->bindParam(':email', $email, PDO::PARAM_STR);
-        $result->bindParam(':password', $password, PDO::PARAM_STR);
+        $result->bindParam(':first_name', $user['first_name'], PDO::PARAM_STR);
+        $result->bindParam(':last_name', $user['last_name'], PDO::PARAM_STR);
+        $result->bindParam(':email', $user['email'], PDO::PARAM_STR);
+        $result->bindParam(':password', $hash_password, PDO::PARAM_STR);
+        $result->bindParam(':description', $user['description'], PDO::PARAM_STR);
+
         return $result->execute();
     }
 
@@ -37,12 +41,13 @@ class User
     public static function checkUserData($email, $password)
     {
         $db = Db::getConnection();
+        $password = md5($password);
 
         $sql = 'SELECT * FROM user WHERE email = :email AND password = :password';
 
         $result = $db->prepare($sql);
-        $result->bindParam(':email', $email, PDO::PARAM_INT);
-        $result->bindParam(':password', $password, PDO::PARAM_INT);
+        $result->bindParam(':email', $email, PDO::PARAM_STR);
+        $result->bindParam(':password', $password, PDO::PARAM_STR);
         $result->execute();
 
         $user = $result->fetch();
@@ -136,6 +141,31 @@ class User
         $result->execute();
 
         return $result->fetch();
+    }
+
+    public static function setToken($id, $token)
+    {
+        $login_time = time();
+        $db = Db::getConnection();
+        $sql = 'UPDATE user SET session_token = :token , last_login = :last_login WHERE id = :uid';
+
+        //var_dump("id: ", $id, 'tiken:' , $token);die;
+        $result = $db->prepare($sql);
+
+        $result->bindParam(':last_login', $login_time, PDO::PARAM_INT);
+        $result->bindParam(':token', $token, PDO::PARAM_STR);
+        $result->bindParam(':uid', $id, PDO::PARAM_INT);
+        return $result->execute();
+    }
+
+    public static function removeToken($id)
+    {
+        $db = Db::getConnection();
+        $sql = 'UPDATE user SET session_token = NULL WHERE id = :uid';
+        $result = $db->prepare($sql);
+        $result->bindParam(':id', $id, PDO::PARAM_INT);
+
+        return $result->execute();
     }
 
 }

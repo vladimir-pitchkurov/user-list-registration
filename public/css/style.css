@@ -39,3 +39,11 @@ label.tab{
 .del{
     display: none;
 }
+.description{
+    width: 100%;
+}
+
+.navbar.navbar-1{
+    position: static;
+    display: block;
+}
