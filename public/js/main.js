@@ -8,7 +8,7 @@ $(document).ready(function () {
     }
 
     if ($('#exampleModal').length > 0) {
-        $('.avatar-list').click(function () {
+        $('.avatar-list').mouseover(function () {
             var imageSrc = this.src;
             $('#exampleModal').find('.modal-avatar-image').attr('src', imageSrc);
             $('#exampleModal').modal();
