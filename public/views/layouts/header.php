@@ -20,7 +20,7 @@ $setting = include_once(ROOT . "/config/user_list_is_open.php");
     <link href="/public/css/style.css" rel="stylesheet">
 </head>
 <body>
-<nav class="navbar navbar-light bg-info navbar-1 white">
+<nav class="navbar navbar-light bg-info navbar-1 white mb-3">
 
     <a class="navbar-brand" href="#" data-toggle="collapse" data-target="#navbarSupportedContent15"
        aria-controls="navbarSupportedContent15"
