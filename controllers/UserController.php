@@ -6,23 +6,19 @@ class UserController
 
     public function actionEdit()
     {
+        Auth::guardedRoute();
         $empty_image = '/public/uploads/images/empty.jpg';
         $id = Auth::userId();
-        if($id){
-            $user = User::getUserById($id);
-        include_once ROOT.'/public/views/edit.php';
-        }else{
-            header("Location: /auth");
-        }
+        $user = User::getUserById($id);
+        include_once ROOT . '/public/views/edit.php';
+
         return true;
     }
 
     public function actionUpdate()
     {
-        if(Auth::isGuest()){
-            header("Location: /auth");
-        }
-        if(sizeof($_POST) > 0){
+        Auth::guardedRoute();
+        if (sizeof($_POST) > 0) {
             $data = $_POST;
             User::edit($data);
         }
@@ -32,8 +28,9 @@ class UserController
 
     public function actionImage()
     {
-        $image_url = "/public/uploads/images/".Auth::userId().".jpg";
+        Auth::guardedRoute();
 
+        $image_url = "/public/uploads/images/" . Auth::userId() . ".jpg";
         if (is_uploaded_file($_FILES["image"]["tmp_name"])) {
             move_uploaded_file($_FILES["image"]["tmp_name"],
                 $_SERVER['DOCUMENT_ROOT'] . $image_url);
@@ -48,22 +45,19 @@ class UserController
     {
         $errors = false;
         $user = [];
-        if($_POST['first_name'] &&
+        if ($_POST['first_name'] &&
             $_POST['last_name'] &&
             $_POST['email'] &&
             $_POST['password'] &&
             $_POST['description']
-        ){
+        ) {
             $user = $_POST;
 
             if (!User::checkName($user['first_name'])) {
-                $errors[] = 'Имя не должно быть короче 2-х символов';
+                $errors[] = 'Имя не должно быть короче 2-х символов<br><h1><a href="/auth">Back to registration-form</a></h1>';
             }
             if (!User::checkName($user['last_name'])) {
                 $errors[] = 'Фамилия не должно быть короче 2-х символов';
-            }
-            if (!User::checkEmail($user['email'])) {
-                $errors[] = 'Неправильный email';
             }
             if (!User::checkPassword($user['password'])) {
                 $errors[] = 'Пароль не должен быть короче 6-ти символов';
@@ -74,22 +68,29 @@ class UserController
 
             if ($errors == false) {
                 $result = User::register($user);
-            }
-            if(isset($result)){
-                    $user['id'] = $result;
-                    $token = Auth::addToSession($user);
-                    $set_token = User::setToken($result, $token);
-                    if(isset($set_token)){
-                        header("Location: /users");
-                    }else{
-                        $errors[] = 'что-то пошло не так при coхранении токена';
-                    }
-                }else{
-                    $errors[] = 'что-то пошло не так при регистрации / авторизации  :(';
-                }
             }else{
-                $errors[] = 'Регистрация не удалась ((';
+                var_dump($errors);echo '<br><h1><a href="/auth">Back to registration-form</a></h1>';die;
             }
+            if (isset($result)) {
+                $user['id'] = $result;
+                $token = Auth::addToSession($user);
+                $set_token = User::setToken($result, $token);
+                var_dump($set_token, $_SESSION, 'in if result');die;
+                if ($set_token) {
+                    header("Location: /users");
+                    return true;
+                } else {
+                    $errors[] = 'что-то пошло не так при coхранении токена<br><h1><a href="/auth">Back to registration-form</a></h1>';
+                    var_dump($errors);die;
+                }
+            } else {
+                $errors[] = 'что-то пошло не так при регистрации / авторизации  :(<br><h1><a href="/auth">Back to registration-form</a></h1>';
+                var_dump($errors);die;
+            }
+        } else {
+            $errors[] = 'Регистрация не удалась ((<br><h1><a href="/auth">Back to registration-form</a></h1>';
+            var_dump($errors);die;
+        }
 
         return true;
     }
@@ -100,22 +101,26 @@ class UserController
         $user = [];
         $email = isset($_POST['login-email']) ? $_POST['login-email'] : false;
         $password = isset($_POST['login-password']) ? $_POST['login-password'] : false;
-        if(
+        if (
             $email &&
             $password
-        ){
-            if(!User::checkPassword($password)){header("Location: /auth");}
+        ) {
+            if (!User::checkPassword($password)) {
+                header("Location: /auth");
+            }
             $userId = User::checkUserData($email, $password);
-            if(!$userId){header("Location: /auth");}
+            if (!$userId) {
+                header("Location: /auth");
+            }
             $token = Auth::addToSession(User::getUserById($userId));
             $isSetToken = User::setToken($userId, $token);
-            if(!$isSetToken){
+            if (!$isSetToken) {
                 Auth::clearSession();
                 header("Location: /auth");
             }
             header("Location: /users");
             return true;
-        }else{
+        } else {
             header("Location: /auth");
             return true;
         }
@@ -129,7 +134,5 @@ class UserController
         header("Location: /auth");
         return true;
     }
-
-
 
 }
