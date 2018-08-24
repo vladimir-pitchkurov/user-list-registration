@@ -11,18 +11,25 @@ endif; ?>
 
         <?php foreach ($users as $user): ?>
             <!--Panel-->
-            <div class="card border-info mb-3 card-user" style="max-width: 18rem;">
-                <div class="card-header">
-                    <img
-                            class="avatar-list"
-                            src="<?= (isset($user['image']) && $user['image']) ? $user['image'] : $empty_image; ?>"
-                            alt="image">
-                </div>
-                <div class="card-body text-info">
-                    <h5 class="card-title"><?= $user['first_name']; ?></h5>
-                    <h5 class="card-title"><?= $user['last_name']; ?></h5>
-                    <p class="card-text"><?= $user['description']; ?></p>
-                    <p><b>Contact email:</b> <?= $user['email']; ?></p>
+            <div class="col-lg-3 col-md-6 col-sm-12">
+                <div class="card border-info mb-3 card-user  " >
+                    <div class="card-header">
+                        <img
+                                class="avatar-list"
+                                src="<?= (isset($user['image']) && $user['image']) ? $user['image'] : $empty_image; ?>"
+                                alt="image">
+                    </div>
+                    <div class="card-body text-info">
+                        <h5 class="card-title"><?= $user['first_name']; ?></h5>
+                        <h5 class="card-title"><?= $user['last_name']; ?></h5>
+                        <p class="card-text"><?= $user['description']; ?></p>
+                        <? if($showEmail): ?>
+                        <p><b>Contact email:</b> <?= $user['email']; ?></p>
+                        <? endif; ?>
+                    </div>
+                    <? if(Auth::userId() === $user['id']):?>
+                        <a class="btn btn-success btn-md" href="/user/edit">Edit profile</a>
+                   <? endif; ?>
                 </div>
             </div>
 
