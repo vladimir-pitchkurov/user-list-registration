@@ -44,4 +44,13 @@ class Auth
         session_destroy();
         session_start();
     }
+
+    public static function guardedRoute()
+    {
+        if (self::isGuest() || !Auth::userId()) {
+            self::clearSession();
+            header("Location: /auth");
+            return true;
+        }
+    }
 }
