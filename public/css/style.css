@@ -9,7 +9,7 @@ body{
 }
 .registration-wrapper{
     display: flex;
-    height: 100vh;
+    margin: 1rem;
     justify-content: center;
     align-items: center;
 
@@ -52,7 +52,7 @@ label.tab{
 .file-download{
     display: flex;
     align-items: center;
-    justify-content: space-around;
+    justify-content: flex-start;
     margin:5vh;
 }
 .navbar.navbar-1{
@@ -72,10 +72,6 @@ label.tab{
     border: 2px solid rgba(0, 0, 0, 0.77);
     width: 80%;
     height: 80%;
-}
-.card-user{
-    margin: 1rem;
-    width: calc(100%/4 - 2rem);
 }
 .pagination li{
     background: #a5ebff;

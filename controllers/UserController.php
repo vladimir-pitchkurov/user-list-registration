@@ -75,7 +75,6 @@ class UserController
                 $user['id'] = $result;
                 $token = Auth::addToSession($user);
                 $set_token = User::setToken($result, $token);
-                var_dump($set_token, $_SESSION, 'in if result');die;
                 if ($set_token) {
                     header("Location: /users");
                     return true;
