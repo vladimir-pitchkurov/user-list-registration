@@ -4,6 +4,9 @@ body{
     -moz-background-size: cover;
     background-size: cover;
 }
+.md-form label{
+    color: #0b51c5;
+}
 .registration-wrapper{
     display: flex;
     height: 100vh;
@@ -87,5 +90,15 @@ label.tab{
     box-shadow: black;
 }
 .pagination a{
-    color: #072fc5;
+    color: #0b51c5;
 }
+.avatar-list{
+    width: 100%;
+}
+.modal-avatar-image{
+    border: 3px solid silver;
+    border-radius: 5px;
+    width: 100%;
+    height: auto;
+}
+

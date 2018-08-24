@@ -3,22 +3,24 @@
 
 class User
 {
-    const SHOW_BY_DEFAULT = 7;
+    const SHOW_BY_DEFAULT = 8;
 
     public static function register($user)
     {
+        $db = Db::getConnection();
         $sql = 'INSERT INTO user (first_name, last_name, email, password, description) '
             . 'VALUES (:first_name, :last_name, :email, :password, :description)';
         $hash_password = md5($user['password']);
 
-        $result = Db::getConnection()->prepare($sql);
+        $result = $db->prepare($sql);
         $result->bindParam(':first_name', $user['first_name'], PDO::PARAM_STR);
         $result->bindParam(':last_name', $user['last_name'], PDO::PARAM_STR);
         $result->bindParam(':email', $user['email'], PDO::PARAM_STR);
         $result->bindParam(':password', $hash_password, PDO::PARAM_STR);
         $result->bindParam(':description', $user['description'], PDO::PARAM_STR);
-        if ($result->execute()) {
-            return Db::getConnection()->lastInsertId();;
+        $result->execute();
+        if ($result) {
+            return $db->lastInsertId();
         } else {
             $errors[] = "Ошибка регистрации.";
             return false;
