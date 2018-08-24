@@ -21,7 +21,9 @@
 <nav class="navbar navbar-light bg-info navbar-1 white">
 
     <!-- Navbar brand -->
-    <a class="navbar-brand" href="#">Navbar</a>
+    <a class="navbar-brand" href="#"  data-toggle="collapse" data-target="#navbarSupportedContent15"
+       aria-controls="navbarSupportedContent15"
+       aria-expanded="false" aria-label="Toggle navigation">MENU </a>
 
     <!-- Collapse button -->
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent15"
