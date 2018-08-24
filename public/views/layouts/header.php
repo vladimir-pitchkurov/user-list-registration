@@ -1,3 +1,7 @@
+<?php
+$setting = include_once(ROOT . "/config/user_list_is_open.php");
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -15,46 +19,36 @@
     <!-- Your custom styles (optional) -->
     <link href="/public/css/style.css" rel="stylesheet">
 </head>
-
 <body>
-<!--Navbar-->
 <nav class="navbar navbar-light bg-info navbar-1 white">
 
-    <!-- Navbar brand -->
-    <a class="navbar-brand" href="#"  data-toggle="collapse" data-target="#navbarSupportedContent15"
+    <a class="navbar-brand" href="#" data-toggle="collapse" data-target="#navbarSupportedContent15"
        aria-controls="navbarSupportedContent15"
        aria-expanded="false" aria-label="Toggle navigation">MENU </a>
 
-    <!-- Collapse button -->
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent15"
             aria-controls="navbarSupportedContent15"
             aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
 
-    <!-- Collapsible content -->
     <div class="collapse navbar-collapse" id="navbarSupportedContent15">
-
-        <!-- Links -->
         <ul class="navbar-nav mr-auto">
-            <? if(Auth::isGuest() ): ?>
-            <li class="nav-item active">
-                <a class="nav-link" href="/auth">Registration / Login</a>
-            </li>
+            <? if (Auth::isGuest()): ?>
+                <li class="nav-item active">
+                    <a class="nav-link" href="/auth">Registration / Login</a>
+                </li>
             <? elseif (!Auth::isGuest() && Auth::userId()): ?>
-            <li class="nav-item">
-                <a class="nav-link" href="/user/edit">Edit profile</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="/user/logout">Logout</a>
-            </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/user/edit">Edit profile</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/user/logout">Logout</a>
+                </li>
             <? endif; ?>
-            <li class="nav-item">
-                <a class="nav-link" href="/users">Users List</a>
-            </li>
+            <? if ($setting['isOpen']): ?>
+                <li class="nav-item">
+                    <a class="nav-link" href="/users">Users List</a>
+                </li>
+            <? endif; ?>
         </ul>
-        <!-- Links -->
-
     </div>
-    <!-- Collapsible content -->
-
 </nav>
-<!--/.Navbar-->
