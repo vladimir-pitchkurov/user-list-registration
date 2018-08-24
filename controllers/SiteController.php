@@ -19,8 +19,13 @@ class SiteController
         if(!$setting['isOpen']){
             Auth::guardedRoute();
         }
+        $showEmail = $setting['canShowEmail'];
         $empty_image = '/public/uploads/images/empty.jpg';
         $users = User::getAllForPage($page);
+        if(!sizeof($users) && $page !== 1){
+            header("Location: /users");
+            return true;
+        }
         $total = intval(User::countUsers()[0]);
         $pagination = new Pagination($total, $page, User::SHOW_BY_DEFAULT, 'page-');
 
