@@ -42,8 +42,50 @@ label.tab{
 .description{
     width: 100%;
 }
-
+.avatar-preview{
+    width: 15vw;
+    height: 100%;
+}
+.file-download{
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    margin:5vh;
+}
 .navbar.navbar-1{
     position: static;
     display: block;
+}
+.edit-user-wpapper{
+    margin: 10%;
+    padding: 5%;
+    background: white;
+}
+.image-card {
+    display: flex;
+    justify-content: center;
+}
+.avatar-edit-card{
+    border: 2px solid rgba(0, 0, 0, 0.77);
+    width: 80%;
+    height: 80%;
+}
+.card-user{
+    margin: 1rem;
+    width: calc(100%/4 - 2rem);
+}
+.pagination li{
+    background: #a5ebff;
+    border: 1px solid black;
+    padding: .5rem;
+    margin: .2rem;
+    font-weight: 800;
+    border-radius: 5px;
+}
+.pagination  :hover{
+    background: #e2faff;
+    box-shadow: black;
+}
+.pagination a{
+    color: #072fc5;
 }

@@ -24,7 +24,8 @@
     <a class="navbar-brand" href="#">Navbar</a>
 
     <!-- Collapse button -->
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent15" aria-controls="navbarSupportedContent15"
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent15"
+            aria-controls="navbarSupportedContent15"
             aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
 
     <!-- Collapsible content -->
@@ -32,14 +33,20 @@
 
         <!-- Links -->
         <ul class="navbar-nav mr-auto">
+            <? if(Auth::isGuest() ): ?>
             <li class="nav-item active">
-                <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+                <a class="nav-link" href="/auth">Registration / Login</a>
+            </li>
+            <? elseif (!Auth::isGuest() && Auth::userId()): ?>
+            <li class="nav-item">
+                <a class="nav-link" href="/user/edit">Edit profile</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#">Features</a>
+                <a class="nav-link" href="/user/logout">Logout</a>
             </li>
+            <? endif; ?>
             <li class="nav-item">
-                <a class="nav-link" href="#">Pricing</a>
+                <a class="nav-link" href="/users">Users List</a>
             </li>
         </ul>
         <!-- Links -->
