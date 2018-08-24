@@ -44,7 +44,7 @@ $setting = include_once(ROOT . "/config/user_list_is_open.php");
                     <a class="nav-link" href="/user/logout">Logout</a>
                 </li>
             <? endif; ?>
-            <? if ($setting['isOpen']): ?>
+            <? if ($setting['isOpen'] || Auth::userId()): ?>
                 <li class="nav-item">
                     <a class="nav-link" href="/users">Users List</a>
                 </li>
