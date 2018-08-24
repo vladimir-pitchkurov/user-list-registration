@@ -4,6 +4,46 @@
 class UserController
 {
 
+    public function actionEdit()
+    {
+        $empty_image = '/public/uploads/images/empty.jpg';
+        $id = Auth::userId();
+        if($id){
+            $user = User::getUserById($id);
+        include_once ROOT.'/public/views/edit.php';
+        }else{
+            header("Location: /auth");
+        }
+        return true;
+    }
+
+    public function actionUpdate()
+    {
+        if(Auth::isGuest()){
+            header("Location: /auth");
+        }
+        if(sizeof($_POST) > 0){
+            $data = $_POST;
+            User::edit($data);
+        }
+        header("Location: /user/edit");
+        return true;
+    }
+
+    public function actionImage()
+    {
+        $image_url = "/public/uploads/images/".Auth::userId().".jpg";
+
+        if (is_uploaded_file($_FILES["image"]["tmp_name"])) {
+            move_uploaded_file($_FILES["image"]["tmp_name"],
+                $_SERVER['DOCUMENT_ROOT'] . $image_url);
+            User::setAvatar($image_url);
+        }
+        header("Location: /user/edit");
+
+        return true;
+    }
+
     public function actionRegister()
     {
         $errors = false;
@@ -35,12 +75,10 @@ class UserController
             if ($errors == false) {
                 $result = User::register($user);
             }
-            if($result){
-                $uid = User::checkUserData($user['email'], $user['password']);
-                if($uid){
-                    $user['id'] = $uid;
+            if(isset($result)){
+                    $user['id'] = $result;
                     $token = Auth::addToSession($user);
-                    $set_token = User::setToken($uid, $token);
+                    $set_token = User::setToken($result, $token);
                     if(isset($set_token)){
                         header("Location: /users");
                     }else{
@@ -52,79 +90,44 @@ class UserController
             }else{
                 $errors[] = 'Регистрация не удалась ((';
             }
-        }
 
-
-
-
-        require_once(ROOT . '/public/views/login-page.php');
         return true;
     }
 
     public function actionLogin()
     {
-        $email = false;
-        $password = false;
-
-        var_dump($_COOKIE);
-        echo '<br>';
-
-        var_dump($_POST);
-        echo '<br>';
-
-        $token = Auth::addToSession(['id' => 2, 'first_name' => 'vasya']);
-        echo '$token: '.$token;
-        echo '<br>';
-
-        var_dump($_SESSION);
-        echo '<br>';
-        die;
-
-        if (isset($_POST['submit'])) {
-            $email = $_POST['email'];
-            $password = $_POST['password'];
-
-
-            $errors = false;
-
-            if (!User::checkEmail($email)) {
-                $errors[] = 'Неправильный email';
-            }
-            if (!User::checkPassword($password)) {
-                $errors[] = 'Пароль не должен быть короче 6-ти символов';
-            }
-
+        $errors = false;
+        $user = [];
+        $email = isset($_POST['login-email']) ? $_POST['login-email'] : false;
+        $password = isset($_POST['login-password']) ? $_POST['login-password'] : false;
+        if(
+            $email &&
+            $password
+        ){
+            if(!User::checkPassword($password)){header("Location: /auth");}
             $userId = User::checkUserData($email, $password);
-
-            if ($userId == false) {
-                $errors[] = 'Неправильные данные для входа на сайт';
-            } else {
-                // Если данные правильные, запоминаем пользователя (сессия)
-                User::auth($userId);
-
-                // Перенаправляем пользователя в закрытую часть - кабинет 
-                header("Location: /cabinet");
+            if(!$userId){header("Location: /auth");}
+            $token = Auth::addToSession(User::getUserById($userId));
+            $isSetToken = User::setToken($userId, $token);
+            if(!$isSetToken){
+                Auth::clearSession();
+                header("Location: /auth");
             }
+            header("Location: /users");
+            return true;
+        }else{
+            header("Location: /auth");
+            return true;
         }
 
-        // Подключаем вид
-        require_once(ROOT . '/views/user/login.php');
-        return true;
     }
 
-    /**
-     * Удаляем данные о пользователе из сессии
-     */
     public function actionLogout()
     {
-        // Стартуем сессию
-        session_start();
-        
-        // Удаляем информацию о пользователе из сессии
-        unset($_SESSION["user"]);
-        
-        // Перенаправляем пользователя на главную страницу
-        header("Location: /");
+        User::removeToken(Auth::userId());
+        Auth::clearSession();
+        header("Location: /auth");
+        return true;
     }
 
 
