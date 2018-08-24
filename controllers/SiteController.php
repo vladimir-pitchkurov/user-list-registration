@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by IntelliJ IDEA.
- * User: admin
- * Date: 20.08.2018
- * Time: 20:24
- */
 
 class SiteController
 {
@@ -21,8 +15,10 @@ class SiteController
 
     public function actionList($page = 1)
     {
-        Auth::guardedRoute();
-
+        $setting = include_once (ROOT."/config/user_list_is_open.php");
+        if(!$setting['isOpen']){
+            Auth::guardedRoute();
+        }
         $empty_image = '/public/uploads/images/empty.jpg';
         $users = User::getAllForPage($page);
         $total = intval(User::countUsers()[0]);
