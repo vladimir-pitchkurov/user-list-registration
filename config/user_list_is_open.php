@@ -1,5 +1,6 @@
 <?php
 
 return array(
-    'isOpen' => false  //public or private USER-LIST for guests
+    'isOpen' => true,  //public or private USER-LIST for guests
+    'canShowEmail' => false   //show email in users-list
 );
