@@ -3,8 +3,6 @@
 
 class User
 {
-    const SHOW_BY_DEFAULT = 8;
-
     public static function register($user)
     {
         $db = Db::getConnection();
@@ -144,7 +142,8 @@ class User
 
         $result->bindParam(':image', $url, PDO::PARAM_STR);
         $result->bindParam(':uid', $id, PDO::PARAM_INT);
-        return $result->execute();
+        $result->execute();
+        return $result;
     }
 
     public static function removeToken($id)
@@ -161,7 +160,7 @@ class User
 
     public static function getAllForPage($page)
     {
-        $limit = self::SHOW_BY_DEFAULT;
+        $limit = Config::get('showUsersInPage');
         $offset = ($page - 1) * $limit;
         $sql = 'SELECT id, first_name, last_name, email, image, description FROM user '
             . 'ORDER BY id ASC LIMIT :limit OFFSET :offset';

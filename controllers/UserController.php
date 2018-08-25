@@ -3,11 +3,10 @@
 
 class UserController
 {
-
     public function actionEdit()
     {
         Auth::guardedRoute();
-        $empty_image = '/public/uploads/images/empty.jpg';
+        $empty_image = Config::get('empty_image');
         $id = Auth::userId();
         $user = User::getUserById($id);
         include_once ROOT . '/public/views/edit.php';
@@ -30,11 +29,14 @@ class UserController
     {
         Auth::guardedRoute();
 
-        $image_url = "/public/uploads/images/" . Auth::userId() . ".jpg";
+        $image_url = Config::get('images_path') . Auth::userId() . ".jpg";
         if (is_uploaded_file($_FILES["image"]["tmp_name"])) {
             move_uploaded_file($_FILES["image"]["tmp_name"],
                 $_SERVER['DOCUMENT_ROOT'] . $image_url);
-            User::setAvatar($image_url);
+            //var_dump($image_url);die;
+            $res = User::setAvatar($image_url);
+            //var_dump($res,$image_url);die;
+
         }
         header("Location: /user/edit");
 

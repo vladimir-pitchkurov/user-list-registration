@@ -40,7 +40,6 @@ endif; ?>
                 </div>
 
                 <button class="btn btn-info my-4 btn-block" type="submit">Register</button>
-
             </form>
 
             <form method="post" action="/user/login" name="sign-in"
@@ -57,12 +56,10 @@ endif; ?>
                         At least 6 characters or digit
                     </small>
                 </div>
-
                 <button class="btn btn-info my-4 btn-block" type="submit">Sign in</button>
 
             </form>
         </div>
     </div>
 
-<?php
-include ROOT . '/public/views/layouts/footer.php'; ?>
+<?php include ROOT . '/public/views/layouts/footer.php'; ?>

@@ -18,7 +18,7 @@ class Auth
         if (self::isGuest()) {
             return false;
         } else {
-            $session_time = (include(ROOT . '/config/session_time.php'))['session_live_time'];
+            $session_time = Config::get('session_live_time');
             $user = User::getUserById(intval($_SESSION['uid']));
             if (!isset($user)) {
                 return false;
