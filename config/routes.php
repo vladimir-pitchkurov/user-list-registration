@@ -11,6 +11,7 @@ return array(
     'user/update-image'   => 'user/image',
     'user/update'         => 'user/update',
     'index.php'           => 'site/index', // actionIndex в SiteController
+    '([^\>]+)'            => 'site/errUrl',
     ''                    => 'site/index', // actionIndex в SiteController
 
 );
