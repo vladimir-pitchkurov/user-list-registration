@@ -1,10 +1,6 @@
 <?php
 include ROOT . '/public/views/layouts/header.php';
-if (isset($errors)):
-    foreach ($errors as $error):?>
-        <p><?= $error; ?></p>
-    <? endforeach;
-endif; ?>
+?>
 
 <div class="container">
     <div class="row">
@@ -27,9 +23,9 @@ endif; ?>
                         <p><b>Contact email:</b> <?= $user['email']; ?></p>
                         <? endif; ?>
                     </div>
-                    <? if(Auth::userId() === $user['id']):?>
+                    <?php if(Auth::userId() == $user['id']){?>
                         <a class="btn btn-success btn-md" href="/user/edit">Edit profile</a>
-                   <? endif; ?>
+                   <?php } ?>
                 </div>
             </div>
 

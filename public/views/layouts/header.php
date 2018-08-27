@@ -28,23 +28,23 @@
 
     <div class="collapse navbar-collapse" id="navbarSupportedContent15">
         <ul class="navbar-nav mr-auto">
-            <? if (Auth::isGuest()): ?>
+            <?php if (Auth::isGuest()): ?>
                 <li class="nav-item active">
                     <a class="nav-link" href="/auth">Registration / Login</a>
                 </li>
-            <? elseif (!Auth::isGuest() && Auth::userId()): ?>
+            <?php elseif (!Auth::isGuest() && Auth::userId()): ?>
                 <li class="nav-item">
                     <a class="nav-link" href="/user/edit">Edit profile</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="/user/logout">Logout</a>
                 </li>
-            <? endif; ?>
-            <? if (Config::get('isOpenListForGuests') || Auth::userId()): ?>
+            <?php endif; ?>
+            <?php if (Config::get('isOpenListForGuests') || Auth::userId()): ?>
                 <li class="nav-item">
                     <a class="nav-link" href="/users">Users List</a>
                 </li>
-            <? endif; ?>
+            <?php endif; ?>
         </ul>
     </div>
 </nav>

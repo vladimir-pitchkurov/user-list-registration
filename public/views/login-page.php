@@ -1,9 +1,5 @@
-<?php include ROOT . '/public/views/layouts/header.php';
-if (isset($errors)):
-    foreach ($errors as $error):?>
-        <p><?= $error; ?></p>
-    <? endforeach;
-endif; ?>
+<?php include ROOT . '/public/views/layouts/header.php'; ?>
+
 
     <div class="registration-wrapper ">
 
@@ -62,4 +58,6 @@ endif; ?>
         </div>
     </div>
 
-<?php include ROOT . '/public/views/layouts/footer.php'; ?>
+<?php
+include ROOT . '/public/views/layouts/footer.php';
+?>

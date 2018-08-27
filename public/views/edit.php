@@ -5,7 +5,7 @@
         <div class="col-10 edit-user-wpapper z-depth-5">
 
             <div class="image-card align-content-center">
-                <image src="<?= $user['image'] ?: $empty_image; ?>" class="avatar-edit-card"></image>
+                <image src="<?php echo $user['image'] ?: $empty_image; ?>" class="avatar-edit-card"></image>
             </div>
 
             <form action="/user/update-image" method="post" enctype="multipart/form-data">
@@ -21,16 +21,16 @@
                 <div class="form-row mb-4">
                     <div class="col">
                         <input type="text" name="first_name" class="form-control" placeholder="First name"
-                               value="<?= $user['first_name']; ?>" required>
+                               value="<?php echo $user['first_name']; ?>" required>
                     </div>
                     <div class="col">
                         <input type="text" name="last_name" class="form-control" placeholder="Last name"
-                               value="<?= $user['last_name']; ?>" required>
+                               value="<?php echo $user['last_name']; ?>" required>
                     </div>
                 </div>
 
                 <textarea name="description" class="description form-control"
-                          required><?= $user['description']; ?></textarea>
+                          required><?php echo $user['description']; ?></textarea>
 
                 <button class="btn btn-info my-4 btn-block " type="submit">Save changes</button>
             </form>
