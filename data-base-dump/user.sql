@@ -35,9 +35,9 @@ CREATE TABLE `user` (
   `email` varchar(40) NOT NULL,
   `password` varchar(200) NOT NULL,
   `description` varchar(250) NOT NULL,
-  `image` varchar(250) NOT NULL,
-  `session_token` varchar(80) NOT NULL,
-  `last_login` int(11) NOT NULL
+  `image` varchar(250) ,
+  `session_token` varchar(80) ,
+  `last_login` int(11)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
