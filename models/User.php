@@ -16,11 +16,13 @@ class User
         $result->bindParam(':email', $user['email'], PDO::PARAM_STR);
         $result->bindParam(':password', $hash_password, PDO::PARAM_STR);
         $result->bindParam(':description', $user['description'], PDO::PARAM_STR);
-        $result->execute();
-        if ($result) {
+        $executed = $result->execute();
+
+        if ($executed) {
             return $db->lastInsertId();
         } else {
-            $errors[] = "Ошибка регистрации.";
+            $errors[] = "Ошибка при регистрации.";
+            var_dump($errors);die;
             return false;
         }
     }
@@ -64,7 +66,7 @@ class User
     {
         $password = md5($password);
 
-        $sql = 'SELECT * FROM user WHERE email = :email AND password = :password';
+        $sql = "SELECT * FROM user WHERE email = :email AND password = :password";
 
         $result = Db::getConnection()->prepare($sql);
         $result->bindParam(':email', $email, PDO::PARAM_STR);
@@ -97,7 +99,7 @@ class User
 
     public static function checkEmailExists($email)
     {
-        $sql = 'SELECT COUNT(*) FROM user WHERE email = :email';
+        $sql = "SELECT COUNT(*) FROM user WHERE email = :email";
 
         $result = Db::getConnection()->prepare($sql);
         $result->bindParam(':email', $email, PDO::PARAM_STR);
@@ -110,7 +112,7 @@ class User
 
     public static function getUserById($id)
     {
-        $sql = 'SELECT * FROM user WHERE id = :id';
+        $sql = "SELECT * FROM user WHERE id = :id";
 
         $result = Db::getConnection()->prepare($sql);
         $result->bindParam(':id', $id, PDO::PARAM_INT);
@@ -123,7 +125,7 @@ class User
     public static function setToken($id, $token)
     {
         $login_time = time();
-        $sql = 'UPDATE user SET session_token = :token , last_login = :last_login WHERE id = :uid';
+        $sql = "UPDATE user SET session_token = :token , last_login = :last_login WHERE id = :uid";
 
         $result = Db::getConnection()->prepare($sql);
 
@@ -136,7 +138,7 @@ class User
     public static function setAvatar($url)
     {
         $id = Auth::userId();
-        $sql = 'UPDATE user SET image = :image WHERE id = :uid';
+        $sql = "UPDATE user SET image = :image WHERE id = :uid";
 
         $result = Db::getConnection()->prepare($sql);
 
@@ -150,7 +152,7 @@ class User
     {
         $empty = 'empty';
         $intId = intval($id);
-        $sql = 'UPDATE user SET session_token = :empty WHERE id = :uid';
+        $sql = "UPDATE user SET session_token = :empty WHERE id = :uid";
         $result = Db::getConnection()->prepare($sql);
         $result->bindParam(':uid', $intId, PDO::PARAM_INT);
         $result->bindParam(':empty', $empty, PDO::PARAM_STR);
@@ -162,13 +164,30 @@ class User
     {
         $limit = Config::get('showUsersInPage');
         $offset = ($page - 1) * $limit;
-        $sql = 'SELECT id, first_name, last_name, email, image, description FROM user '
-            . 'ORDER BY id ASC LIMIT :limit OFFSET :offset';
+        $sql = "SELECT id, first_name, last_name, email, image, description FROM user "
+            . "ORDER BY id ASC LIMIT :limit OFFSET :offset";
 
         $prepared = Db::getConnection()->prepare($sql);
         $prepared->bindParam(':limit', $limit, PDO::PARAM_INT);
         $prepared->bindParam(':offset', $offset, PDO::PARAM_INT);
         $prepared->execute();
         return $prepared->fetchAll();
+    }
+
+    public static function getIdByEmail($email)
+    {
+        $sql = "SELECT id FROM user WHERE email = :email";
+
+        $result = Db::getConnection()->prepare($sql);
+        $result->bindParam(':email', $password, PDO::PARAM_STR);
+        $result->execute();
+
+        $user = $result->fetch();
+
+        if ($user) {
+            return $user['id'];
+        }
+        return false;
+
     }
 }
