@@ -45,7 +45,7 @@ class UserController
 
     public function actionRegister()
     {
-        $errors = false;
+        $errors = [];
         $user = [];
         if ($_POST['first_name'] &&
             $_POST['last_name'] &&
@@ -68,7 +68,7 @@ class UserController
                 $errors[] = 'Такой email уже используется';
             }
 
-            if ($errors == false) {
+            if (sizeof($errors) === 0) {
                 $result = User::register($user);
             }else{
                 var_dump($errors);echo '<br><h1><a href="/auth">Back to registration-form</a></h1>';die;
