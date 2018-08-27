@@ -73,7 +73,7 @@ class UserController
             }else{
                 var_dump($errors);echo '<br><h1><a href="/auth">Back to registration-form</a></h1>';die;
             }
-            if (isset($result)) {
+            if ($result) {
                 $user['id'] = $result;
                 $token = Auth::addToSession($user);
                 $set_token = User::setToken($result, $token);
@@ -81,16 +81,16 @@ class UserController
                     header("Location: /users");
                     return true;
                 } else {
-                    $errors[] = 'что-то пошло не так при coхранении токена<br><h1><a href="/auth">Back to registration-form</a></h1>';
-                    var_dump($errors);die;
+                    echo 'что-то пошло не так при coхранении токена<br><h1><a href="/auth">Back to registration-form</a></h1>';
+                    die;
                 }
             } else {
-                $errors[] = 'что-то пошло не так при регистрации / авторизации  :(<br><h1><a href="/auth">Back to registration-form</a></h1>';
-                var_dump($errors);die;
+                echo 'что-то пошло не так при регистрации / авторизации  :(<br><h1><a href="/auth">Back to registration-form</a></h1>';
+                die;
             }
         } else {
-            $errors[] = 'Регистрация не удалась ((<br><h1><a href="/auth">Back to registration-form</a></h1>';
-            var_dump($errors);die;
+            echo 'Регистрация не удалась ((<br><h1><a href="/auth">Back to registration-form</a></h1>';
+            die;
         }
 
         return true;
