@@ -18,7 +18,7 @@ body{
     background: rgba(179, 227, 255, 0.8);
 }
 .registration-window form{
-    background: #ffeffc;
+    background: #fff9fb;
 }
 
 label.tab{
@@ -30,7 +30,7 @@ label.tab{
     cursor: pointer;
 }
 .tab.active{
-    background: #ffeffc;
+    background: #fff9fb;
     color: #0b51c5;
 }
 .tab-form.active{
